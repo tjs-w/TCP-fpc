@@ -40,13 +40,14 @@ Making the module creates fptcp.ko. Insert this module as:
 Maximum of 64 rules can be installed.
 
 
-Insertion creates sysfs interface for fptcp under CONFIGFS_MOUNT/ as:
-_\[CONFIGFS_MOUNT is Mount point for configfs filesystem.\]_
+Insertion creates sysfs interface for fptcp under CONFIGFS_MOUNT dir as:
 
-...CONFIGFS_MOUNT/fptcp/enable   	- [RW] Enable disable the functionality.
-...CONFIGFS_MOUNT/fptcp/store_rules 	- [WO] Install/remove the rules.
-...CONFIGFS_MOUNT/fptcp/show_rules   - [RO] View currently installed rules.
-...CONFIGFS_MOUNT/fptcp/flush_rules  - [WO] Reset/uninstall all the rules.
+_\(CONFIGFS_MOUNT is mount-point for configfs filesystem.\)_
+
+\.\.\.CONFIGFS_MOUNT/fptcp/enable   	\- \[RW\] Enable disable the functionality.
+\.\.\.CONFIGFS_MOUNT/fptcp/store_rules  \- \[WO\] Install/remove the rules.
+\.\.\.CONFIGFS_MOUNT/fptcp/show_rules   \- \[RO\] View currently installed rules.
+\.\.\.CONFIGFS_MOUNT/fptcp/flush_rules  \- \[WO\] Reset/uninstall all the rules.
 
 
 * CONFIGFS_MOUNT/fptcp/enable reads '0' initially. You must write '1' to 
@@ -56,15 +57,9 @@ present, but enable is '0', the packets are not tapped and the module though
 inserted into the kernel will affect any performance.
 
 * CONFIGFS_MOUNT/fptcp/store_rules allows 2 commands and 5 tuple rule.
-Commands:
+Commands>
     ADD                 : cmd=add
     DEL                 : cmd=del
-Rules:                                  (<...> is placeholder)
-    SOURCE IP           : s_ip=<ip1>
-    SOURCE PORT         : s_port=<port1>
-    DESTINATION IP      : d_ip=<ip2>
-    DESTINATION PORT    : d_port=<port2>
-    PERCENT CORRUPTION  : perc=<n>
 NOTE:
 All these tokens ought to be comma-separated. No whitespaces!
 
