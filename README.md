@@ -32,14 +32,9 @@ To clean:
 ## Usage
 
 Making the module creates fptcp.ko. Insert this module as:
+
 ```bash
         sudo insmod fptcp.ko
-```
-
-OR
-
-```bash
-        sudo insmod fptcp.ko 
 ```
 
 Maximum of 64 rules can be installed.
