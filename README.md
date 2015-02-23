@@ -45,8 +45,11 @@ Insertion creates sysfs interface for fptcp under CONFIGFS_MOUNT dir as:
 _\(CONFIGFS_MOUNT is mount-point for configfs filesystem.\)_
 
 \.\.\.CONFIGFS_MOUNT/fptcp/enable   	\- \[RW\] Enable disable the functionality.
+
 \.\.\.CONFIGFS_MOUNT/fptcp/store_rules  \- \[WO\] Install/remove the rules.
+
 \.\.\.CONFIGFS_MOUNT/fptcp/show_rules   \- \[RO\] View currently installed rules.
+
 \.\.\.CONFIGFS_MOUNT/fptcp/flush_rules  \- \[WO\] Reset/uninstall all the rules.
 
 
