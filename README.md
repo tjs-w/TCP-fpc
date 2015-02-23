@@ -51,7 +51,7 @@ The module insertion fails if the configfs is not mounted prior. Sometimes it co
 sudo mount -t configfs none /config/
 ```
 
-You can get the mount point by simple bash command `mount | grep configfs`. On insertion, the following config files will be created at the mount point, that help in communicating the rules to and from the kernel.
+You can get the mount point by simple bash command `mount | grep configfs`. On insertion, the following config files will be created at the mount point, that help in communicating the rules and commands to and from the kernel.
 
 \(*CONFIGFS_MOUNT* is mount-point for configfs filesystem.\)
 
