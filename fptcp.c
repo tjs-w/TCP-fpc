@@ -68,8 +68,6 @@ static ssize_t show_rules(fptcp_cfgfs_t *cfg, char *buf)
 	int     i, l;
 	char    *out = buf;
 
-	fplog("buf: %p\n", buf);
-
 	/* Header */
 	l = sprintf(out, "%-20s%-10s%-20s%-10s%-5s\n\n", 
 			"src_ip", "src_port", "dst_ip", "dst_port", "%corrupt");
@@ -91,7 +89,6 @@ static ssize_t show_rules(fptcp_cfgfs_t *cfg, char *buf)
 		out += l;
 	}
 
-	fplog("buf: %p\n", buf);
 	print_hex_dump(KERN_ALERT, "FPTCP ", DUMP_PREFIX_NONE, 32, 1, 
 			buf, 1024, true);
 	return strlen(buf);
@@ -113,7 +110,6 @@ static int parse_rule(const char *s, size_t count, const char *delim,
 	memset(rule, 0, sizeof(fptcp_rule_t));
 
 	orig = opts;
-	fplog("Opts: %s\n", orig);
 	while ((ptr = strsep(&opts, delim)) != NULL) {
 		if (!ptr)
 			continue;
@@ -167,7 +163,7 @@ static int parse_rule(const char *s, size_t count, const char *delim,
 			calc_set_interval(rule);
 			break;
 		default:
-			fplog("Token=%d %s %s\n", token, ptr, args->from);
+			fplog("ERR:Token=%d %s %s\n", token, ptr, args->from);
 			break;
 		}
 	}
@@ -183,7 +179,7 @@ static int parse_rule(const char *s, size_t count, const char *delim,
 static int add_rule(fptcp_cfgfs_t *cfg, fptcp_rule_t *rule)
 {
 	if (__fpc_inst_nr_rules(cfg) >= MAX_NR_FLOWS) {
-		fplog("add: nr rules %d\n", __fpc_inst_nr_rules(cfg));
+		fplog("nr rules %d\n", __fpc_inst_nr_rules(cfg));
 		return -ENOMEM;
 	}
 
@@ -237,7 +233,6 @@ static ssize_t store_rules(fptcp_cfgfs_t *cfg, const char *buf, size_t count)
 	fptcp_rule_t rule;
 	int ret, cmd = FPTCP_CMD_NULL;
 
-	fplog("nr rules %d\n", __fpc_inst_nr_rules(cfg));
 	if (__fpc_inst_nr_rules(cfg) >= MAX_NR_FLOWS) {
 		fplog("nr rules %d\n", __fpc_inst_nr_rules(cfg));
 		return -ENOMEM;
@@ -248,13 +243,13 @@ static ssize_t store_rules(fptcp_cfgfs_t *cfg, const char *buf, size_t count)
 		return ret;
 	}
 
+    fplog("wr: ip_src=%pI4 ip_dst=%pI4\
+            port_src=%hhu port_dst=%hhu percent=%u\n", 
+            &(rule.ip_src), &(rule.ip_dst),
+            rule.port_src, rule.port_dst, rule.percent);
 	if (!(rule.ip_src && rule.ip_dst && 
 				rule.port_src && rule.port_dst && 
 				(rule.percent > 0) && (rule.percent <= 100))) {
-		fplog("parse o/p: ip_src=%pI4 ip_dst=%pI4\
-				port_src=%hhu port_dst=%hhu percent=%u\n", 
-				&(rule.ip_src), &(rule.ip_dst),
-				rule.port_src, rule.port_dst, rule.percent);
 		return -EINVAL;
 	}
 
@@ -264,12 +259,12 @@ static ssize_t store_rules(fptcp_cfgfs_t *cfg, const char *buf, size_t count)
 		break;
 	case FPTCP_CMD_DEL:
 		del_rule(cfg, &rule);
+        break;
 	default:
 		fplog("Invalid cmd=%d\n", cmd);
 		return -EINVAL;
 	}
 
-	fplog("wr: %s\n", buf);
 	return count;
 }
 
@@ -279,12 +274,10 @@ static ssize_t store_rules(fptcp_cfgfs_t *cfg, const char *buf, size_t count)
  */ 
 static ssize_t flush_rules(fptcp_cfgfs_t *cfg, const char *buf, size_t count)
 {
-	fplog("nr rules %d\n", __fpc_inst_nr_rules(cfg));
 	if (strcmp(buf, "1\n") == 0)
 		__fpc_inst_nr_rules(cfg) = 0;
 	else
 		return -EINVAL;
-	fplog("nr rules %d\n", __fpc_inst_nr_rules(cfg));
 	return count;
 }
 
@@ -306,11 +299,14 @@ static ssize_t enable_store(fptcp_cfgfs_t *cfg, const char *buf, size_t count)
 		fplog("Invalid val=%d err=%d\n", val, r);
 		return r;
 	}
+
 	fplog("val=%d __fpc_enable=%d count=%ld buf=%s\n", 
 			val, __fpc_enable(cfg), count, buf);
-	if (val == __fpc_enable(cfg))
+	
+    if (val == __fpc_enable(cfg))
 		return count;
-	if (val == 1) {
+	
+    if (val == 1) {
 		r = nf_register_hook(&nfh_ops);
 		if (r < 0) {
 			fplog("err=%d\n", r);
@@ -434,7 +430,6 @@ static int __init create_configfs(void)
 				__FILE__, __LINE__, __func__);
 		goto _exit;
 	}
-	fplog("/sys/kernel/config/fptcp/ created.\n");
 
 	return 0;
 _exit:
@@ -459,8 +454,6 @@ static inline void fptcp_process_seg(struct sk_buff *sock_buff)
 
 	dp = (u32 *) data;
 	*dp = __fp_reorder(*dp);
-
-	fplog("%s: tweaked the TCP seg for false-positive checksum\n", __func__);
 }
 
 /**

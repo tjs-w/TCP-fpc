@@ -78,7 +78,10 @@ typedef struct {
     ((((x) & 0x0000ffff) << 16) | (((x) & 0xffff0000) >> 16))
 
 /* Logging */
+#ifndef FPTCP_LOG_LVL
+#define FPTCP_LOG_LVL   KERN_INFO
+#endif
 #define fplog(format, ...)                                      \
-    printk(KERN_ALERT "FPTCP:%s " format, __func__, ##__VA_ARGS__);
+    printk(FPTCP_LOG_LVL "FPTCP:%s " format, __func__, ##__VA_ARGS__);
 
 #endif      /* __FPTCP_H */
