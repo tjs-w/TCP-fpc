@@ -35,23 +35,24 @@ Making the module creates fptcp.ko. Insert this module as:
 ```bash
         sudo insmod fptcp.ko
 ```
-        OR
+
+OR
+
 ```bash
-        sudo insmod fptcp.ko nr_rules=10
+        sudo insmod fptcp.ko 
 ```
-The option 'nr_rules' is to specify MAXIMUM number of rules/flows
-you would want to install. The default value for is 16, and the
-upper limit is 1024.
+
+Maximum of 64 rules can be installed.
 
 
 Insertion creates sysfs interface for fptcp under /sys/ as:
-	
-\[CONFIGFS_MOUNT_PT: Mount point for configfs filesystem.\]
 
 ...CONFIGFS_MOUNT_PT/fptcp/enable   	- [RW] Enable disable the functionality.
 ...CONFIGFS_MOUNT_PT/fptcp/store_rules 	- [WO] Install/remove the rules.
 ...CONFIGFS_MOUNT_PT/fptcp/show_rules   - [RO] View currently installed rules.
 ...CONFIGFS_MOUNT_PT/fptcp/flush_rules  - [WO] Reset/uninstall all the rules.
+
+\[CONFIGFS_MOUNT_PT is Mount point for configfs filesystem.\]
 
 * /sys/fptcp/enable reads '0' initially. You must write '1' to activate
 the functionality. If the rules are not present, but enable is '1',
