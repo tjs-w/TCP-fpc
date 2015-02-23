@@ -13,37 +13,47 @@ then at least one container must contain more than one item.
 This leads to false positive cases with a fairly high frequency in high-speed
 networks.
 
-This kernel module enables to corrupt TCP segments/data, that still
+This kernel module enables to corrupt ingress TCP segments/data, that still
 will possess the same checksum. This is meant for *TESTING* the
-applications for the scenarios when the TCP does not catch the data
-corruption due to its 16-bit checksum.
+applications for the scenarios when the TCP fails to catch the data
+corruption through its humble, feable 16-bit checksum.
 
 ## Compile
 
 Under the dir .../TCP-fpc/ do:
 ```bash
-        make
-        sudo make install
+make
 ```
+To install it in modules dir:
+```bash
+sudo make install
+```
+
 To clean:
 ```bash
-        make clean
+make clean
 ```
+
+Remake:
+```bash
+make clean all install
+```
+
 ## Usage
 
 Making the module creates fptcp.ko. Insert this module as:
-
 ```bash
-        sudo insmod fptcp.ko
+sudo insmod fptcp.ko
 ```
 
-Maximum of 64 rules can be installed.
+The module insertion fails if the configfs is not mounted prior. Sometimes it could be premounted at `/sys/kernel/config/` or you can just mount it at `/config/` as shown below.
+```bash
+sudo mount -t configfs none /config/
+```
 
+You can get the mount point by simple bash command `mount | grep configfs`. On insertion, the following config files will be created at the mount point, that help in communicating the rules to and from the kernel.
 
-Insertion creates sysfs interface for fptcp under CONFIGFS_MOUNT dir as:
-
-_\(CONFIGFS_MOUNT is mount-point for configfs filesystem.\)_
-
+\(*CONFIGFS_MOUNT* is mount-point for configfs filesystem.\)
 
 * **CONFIGFS_MOUNT/fptcp/enable   	\- \[RW\] Enable disable the functionality.**
 CONFIGFS_MOUNT/fptcp/enable reads '0' initially. You must write '1' to 
@@ -59,6 +69,7 @@ Commands>
     DEL                 : cmd=del
 NOTE:
 All these tokens ought to be comma-separated. No whitespaces!
+Maximum of 64 rules can be installed.
 
 * **CONFIGFS_MOUNT/fptcp/show_rules   \- \[RO\] View currently installed rules.**
 CONFIGFS_MOUNT/fptcp/show_rules displays the rules installed in tabular format.
