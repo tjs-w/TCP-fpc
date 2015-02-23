@@ -96,11 +96,12 @@ echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827
 echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
 		 > $CFGFS/fptcp/store_rules
 
-# Reset to no rules
-echo 1 > $CFGFS/fptcp/flush_rules
 
 # View installed rules in tabular format
 cat $CFGFS/fptcp/show_rules
+
+# Reset to no rules
+echo 1 > $CFGFS/fptcp/flush_rules
 
 ```
 
