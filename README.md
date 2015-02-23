@@ -76,20 +76,24 @@ written to it.
 
 ## Examples
 ```bash
-    # Enable/disable tapping the IP packets
-    echo 1 > /sys/fptcp/enable
-    echo 0 > /sys/fptcp/enable
 
-    cat /sys/fptcp/enable   # Read enable
+CFGFS=/sys/kernel/config/
 
-    # Install/remove rules
-    echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50'
-    echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50'
-    
-    # Reset
-    echo 1 > /sys/fptcp/reset
+# Enable/disable tapping the IP packets
+echo 1 > $CFGFS/fptcp/enable
+echo 0 > $CFGFS/fptcp/enable
 
-    # View installed rules in tabular format
-    cat /sys/fptcp/view
+cat $CFGFS/fptcp/enable   # Read enable
+
+# Install/remove rules
+echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' > $CFGFS/fptcp/store_rules
+echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' > $CFGFS/fptcp/store_rules
+
+# Reset
+echo 1 > $CFGFS/fptcp/reset
+
+# View installed rules in tabular format
+cat $CFGFS/fptcp/view
+
 ```
 
