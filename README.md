@@ -44,31 +44,27 @@ Insertion creates sysfs interface for fptcp under CONFIGFS_MOUNT dir as:
 
 _\(CONFIGFS_MOUNT is mount-point for configfs filesystem.\)_
 
-\.\.\.CONFIGFS_MOUNT/fptcp/enable   	\- \[RW\] Enable disable the functionality.
 
-\.\.\.CONFIGFS_MOUNT/fptcp/store_rules  \- \[WO\] Install/remove the rules.
-
-\.\.\.CONFIGFS_MOUNT/fptcp/show_rules   \- \[RO\] View currently installed rules.
-
-\.\.\.CONFIGFS_MOUNT/fptcp/flush_rules  \- \[WO\] Reset/uninstall all the rules.
-
-
-* CONFIGFS_MOUNT/fptcp/enable reads '0' initially. You must write '1' to 
+* **CONFIGFS_MOUNT/fptcp/enable   	\- \[RW\] Enable disable the functionality.**
+CONFIGFS_MOUNT/fptcp/enable reads '0' initially. You must write '1' to 
 activate the functionality. If the rules are not present, but enable is '1', 
 module shall tap all packets but will not do anything. If the rules are 
 present, but enable is '0', the packets are not tapped and the module though 
 inserted into the kernel will affect any performance.
 
-* CONFIGFS_MOUNT/fptcp/store_rules allows 2 commands and 5 tuple rule.
+* **CONFIGFS_MOUNT/fptcp/store_rules  \- \[WO\] Install/remove the rules.**
+CONFIGFS_MOUNT/fptcp/store_rules allows 2 commands and 5 tuple rule.
 Commands>
     ADD                 : cmd=add
     DEL                 : cmd=del
 NOTE:
 All these tokens ought to be comma-separated. No whitespaces!
 
-* CONFIGFS_MOUNT/fptcp/show_rules displays the rules installed in tabular format.
+* **CONFIGFS_MOUNT/fptcp/show_rules   \- \[RO\] View currently installed rules.**
+CONFIGFS_MOUNT/fptcp/show_rules displays the rules installed in tabular format.
 
-* CONFIGFS_MOUNT/fptcp/flush_rules uninstalls all the rules installed when '1' is
+* **CONFIGFS_MOUNT/fptcp/flush_rules  \- \[WO\] Reset/uninstall all the rules.**
+CONFIGFS_MOUNT/fptcp/flush_rules uninstalls all the rules installed when '1' is
 written to it.
 
 ## Examples
