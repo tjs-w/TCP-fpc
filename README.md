@@ -40,23 +40,22 @@ Making the module creates fptcp.ko. Insert this module as:
 Maximum of 64 rules can be installed.
 
 
-Insertion creates sysfs interface for fptcp under /sys/ as:
+Insertion creates sysfs interface for fptcp under CONFIGFS_MOUNT/ as:
+_\[CONFIGFS_MOUNT is Mount point for configfs filesystem.\]_
 
-...CONFIGFS_MOUNT_PT/fptcp/enable   	- [RW] Enable disable the functionality.
-...CONFIGFS_MOUNT_PT/fptcp/store_rules 	- [WO] Install/remove the rules.
-...CONFIGFS_MOUNT_PT/fptcp/show_rules   - [RO] View currently installed rules.
-...CONFIGFS_MOUNT_PT/fptcp/flush_rules  - [WO] Reset/uninstall all the rules.
+...CONFIGFS_MOUNT/fptcp/enable   	- [RW] Enable disable the functionality.
+...CONFIGFS_MOUNT/fptcp/store_rules 	- [WO] Install/remove the rules.
+...CONFIGFS_MOUNT/fptcp/show_rules   - [RO] View currently installed rules.
+...CONFIGFS_MOUNT/fptcp/flush_rules  - [WO] Reset/uninstall all the rules.
 
-\[CONFIGFS_MOUNT_PT is Mount point for configfs filesystem.\]
 
-* /sys/fptcp/enable reads '0' initially. You must write '1' to activate
-the functionality. If the rules are not present, but enable is '1',
-module shall tap all packets but will not do anything. If the
-rules are present, but enable is '0', the packets are not tapped
-and the module though inserted into the kernel will affect any
-performance.
+* CONFIGFS_MOUNT/fptcp/enable reads '0' initially. You must write '1' to 
+activate the functionality. If the rules are not present, but enable is '1', 
+module shall tap all packets but will not do anything. If the rules are 
+present, but enable is '0', the packets are not tapped and the module though 
+inserted into the kernel will affect any performance.
 
-* /sys/fptcp/store_rules allows 2 commands and 5 tuple rule.
+* CONFIGFS_MOUNT/fptcp/store_rules allows 2 commands and 5 tuple rule.
 Commands:
     ADD                 : cmd=add
     DEL                 : cmd=del
@@ -69,14 +68,15 @@ Rules:                                  (<...> is placeholder)
 NOTE:
 All these tokens ought to be comma-separated. No whitespaces!
 
-* /sys/fptcp/show_rules displays the rules installed in tabular format.
+* CONFIGFS_MOUNT/fptcp/show_rules displays the rules installed in tabular format.
 
-* /sys/fptcp/flush_rules uninstalls all the rules installed when '1' is
+* CONFIGFS_MOUNT/fptcp/flush_rules uninstalls all the rules installed when '1' is
 written to it.
 
 ## Examples
 ```bash
 
+# Mount point of configfs
 CFGFS=/sys/kernel/config/
 
 # Enable/disable tapping the IP packets
@@ -85,9 +85,11 @@ echo 0 > $CFGFS/fptcp/enable
 
 cat $CFGFS/fptcp/enable   # Read enable
 
-# Install/remove rules
-echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' > $CFGFS/fptcp/store_rules
-echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' > $CFGFS/fptcp/store_rules
+# Install/remove rules. Delimiter is comma \(,\). No whitespaces!
+echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
+		 > $CFGFS/fptcp/store_rules
+echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
+		 > $CFGFS/fptcp/store_rules
 
 # Reset
 echo 1 > $CFGFS/fptcp/reset
