@@ -86,9 +86,9 @@ CFGFS=/sys/kernel/config/
 
 # Enable/disable tapping the IP packets
 echo 1 > $CFGFS/fptcp/enable
-echo 0 > $CFGFS/fptcp/enable
+echo 0 > $CFGFS/fptcp/enable  	# This is as good as not having any checks in the net flow, even though the module is inserted.
 
-cat $CFGFS/fptcp/enable   # Read enable
+cat $CFGFS/fptcp/enable   	# Read enable
 
 # Install/remove rules. Delimiter is comma \(,\). No whitespaces!
 echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
@@ -96,11 +96,11 @@ echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827
 echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
 		 > $CFGFS/fptcp/store_rules
 
-# Reset
-echo 1 > $CFGFS/fptcp/reset
+# Reset to no rules
+echo 1 > $CFGFS/fptcp/flush_rules
 
 # View installed rules in tabular format
-cat $CFGFS/fptcp/view
+cat $CFGFS/fptcp/show_rules
 
 ```
 
