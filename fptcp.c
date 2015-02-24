@@ -513,7 +513,7 @@ static int __init fptcp_init(void)
 
 	/* Netfilter setup */
 	nfh_ops.hook = fptcp_hook;
-	nfh_ops.hooknum = 1;
+	nfh_ops.hooknum = NF_IP_LOCAL_IN;
 	nfh_ops.pf = PF_INET;
 	nfh_ops.priority = NF_IP_PRI_FIRST;
 	nfh_ops.priv= NULL;
