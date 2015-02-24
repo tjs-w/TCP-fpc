@@ -60,7 +60,7 @@ CONFIGFS_MOUNT/fptcp/enable reads '0' initially. You must write '1' to
 activate the functionality. If the rules are not present, but enable is '1', 
 module shall tap all packets but will not do anything. If the rules are 
 present, but enable is '0', the packets are not tapped and the module though 
-inserted into the kernel will affect any performance.
+inserted into the kernel will not affect any performance.
 
 * **CONFIGFS_MOUNT/fptcp/store_rules  \- \[WO\] Install/remove the rules.**
 CONFIGFS_MOUNT/fptcp/store_rules allows 2 commands and 5 tuple rule.
