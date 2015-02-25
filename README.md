@@ -113,4 +113,4 @@ echo 1 > $CFGFS/fptcp/flush_rules
 	* Changing 4 bytes that crc16 to 0 so that they still crc16 to 0
 	* Inserting 0 bytes
 	* Deleting 0 bytes
-
+3. Support wildcards in rules
