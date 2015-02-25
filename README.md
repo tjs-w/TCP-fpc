@@ -107,10 +107,10 @@ echo 1 > $CFGFS/fptcp/flush_rules
 
 ## ToDo
 
-1. IPv6 support
-2. Other modes of corruption
-	* Flipping strings of 16 0's and 1's
-	* Changing 4 bytes that crc16 to 0 so that they still crc16 to 0
-	* Inserting 0 bytes
-	* Deleting 0 bytes
-3. Support wildcards in rules
+1. [ ] IPv6 support
+2. [ ] Other modes of corruption
+	* [ ] Flipping strings of 16 0's and 1's
+	* [ ] Changing 4 bytes that crc16 to 0 so that they still crc16 to 0
+	* [ ] Inserting 0 bytes
+	* [ ] Deleting 0 bytes
+3. [ ] Support wildcards in rules
