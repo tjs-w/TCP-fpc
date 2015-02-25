@@ -90,7 +90,7 @@ echo 0 > $CFGFS/fptcp/enable  	# This is as good as not having any checks in the
 
 cat $CFGFS/fptcp/enable   	# Read enable
 
-# Install/remove rules. Delimiter is comma \(,\). No whitespaces!
+# Install/remove rules. Delimiter is comma (,). No whitespaces!
 echo 'cmd=add,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
 		 > $CFGFS/fptcp/store_rules
 echo 'cmd=del,s_ip=74.125.224.72.10.0.1,s_port=80,d_ip=192.101.9.18,d_port=80827,perc=50' \
@@ -104,4 +104,13 @@ cat $CFGFS/fptcp/show_rules
 echo 1 > $CFGFS/fptcp/flush_rules
 
 ```
+
+## ToDo
+
+1. IPv6 support
+2. Other modes of corruption
+	* Flipping strings of 16 0's and 1's
+	* Changing 4 bytes that crc16 to 0 so that they still crc16 to 0
+	* Inserting 0 bytes
+	* Deleting 0 bytes
 
